@@ -2,56 +2,76 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Post;
+use Illuminate\Http\Request;
+use App\Http\Responses\PostsShowView;
+
 class PostsController extends Controller
 {
     public function index()
     {
-        $posts = [
-            ['id' => 1, 'title' => 'first post', 'postedBy' => 'Omar', 'createdAt' => '22-10-12'],
-            ['id' => 2, 'title' => 'second post', 'postedBy' => 'Ahmed', 'createdAt' => '22-10-2'],
-            ['id' => 3, 'title' => 'third post', 'postedBy' => 'Yara', 'createdAt' => '22-10-13']
-        ];
+        $posts = Post::all();
+        $posts = Post::paginate(10);
         return view('posts/index', ['posts' => $posts]);
     }
 
     public function create()
     {
-        return view('posts/create');
+        $users = User::all();
+        return view('posts/create', ['users' => $users]);
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        $post = new Post;
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->user_id = $request->poster;
+        $post->save();
         return redirect()->route('posts.index');
     }
 
     public function show($id)
     {
-        $posts = [
-            ['id' => 1, 'title' => 'first post', 'postedBy' => 'Omar', 'createdAt' => '22-10-12'],
-            ['id' => 2, 'title' => 'second post', 'postedBy' => 'Ahmed', 'createdAt' => '22-10-2'],
-            ['id' => 3, 'title' => 'third post', 'postedBy' => 'Yara', 'createdAt' => '22-10-13']
-        ];
-        return view('posts/show', ['posts' => $posts, 'id' => $id]);
+        $post = Post::where('id', $id)->first();
+        return view('posts/show', ['post' => $post]);
+    }
+
+    public function ajax($id)
+    {
+        $post = Post::where('id', $id)->first();
+        return new PostsShowView(['post' => $post]);
     }
 
     public function edit($id)
     {
-        $posts = [
-            ['id' => 1, 'title' => 'first post', 'postedBy' => 'Omar', 'createdAt' => '22-10-12'],
-            ['id' => 2, 'title' => 'second post', 'postedBy' => 'Ahmed', 'createdAt' => '22-10-2'],
-            ['id' => 3, 'title' => 'third post', 'postedBy' => 'Yara', 'createdAt' => '22-10-13']
-        ];
-        $names = ['Ahmed', 'Omar', 'Yara'];
-        return view('posts/edit', ['posts' => $posts, 'id' => $id, 'names' => $names]);
+        $post = Post::where('id', $id)->first();
+        $users = User::all();
+        return view('posts/edit', ['post' => $post, 'users' => $users]);
     }
 
-    public function update($id)
+    public function update($id, Request $request)
     {
+        $post = Post::where('id', $id)->first();
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->user_id = $request->poster;
+        $post->save();
         return redirect()->route('posts.index');
     }
 
     public function destroy($id)
     {
+        $post = Post::find($id);
+        $post->delete();
+        return redirect()->route('posts.index');
+    }
+
+    public function restore()
+    {
+        Post::withTrashed()
+            ->restore();
         return redirect()->route('posts.index');
     }
 }

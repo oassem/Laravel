@@ -4,15 +4,16 @@
 <form class="w-50 mt-5 mx-5" method="POST" action="{{route('posts.store')}}">
     @csrf
     <div class="form-group mb-5">
-        <input type="text" class="form-control" placeholder="Enter title">
+        <input type="text" name="title" class="form-control" placeholder="Enter title">
     </div>
     <div class="form-group mb-5">
-        <textarea type="text" class="form-control" placeholder="Enter description" rows="3"></textarea>
+        <textarea type="text" name="description" class="form-control" placeholder="Enter description" rows="3"></textarea>
     </div class="form-group mb-5">
     <div>
-        <select class="form-select mb-5">
-            <option>Ahmed</option>
-            <option>Omar</option>
+        <select name="poster" class="form-select mb-5">
+            @foreach($users as $user)
+            <option value="{{$user->id}}">{{$user->name}}</option>
+            @endforeach
         </select>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>

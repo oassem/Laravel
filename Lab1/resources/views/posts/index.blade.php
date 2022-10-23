@@ -1,12 +1,13 @@
 @extends('layouts.layout')
 @section('title') Home @endsection
 @section('content')
-<div style="text-align:center">
-    <a href="{{route('posts.create')}}" style='font-family:cursive'>
-        <x-button type="success" class="mt-5"><b>Create Post</b></x-button>
+<div class="d-flex justify-content-center w-50 mx-auto mt-5" style='font-family:cursive'>
+    <a href="{{route('posts.create')}}">
+        <x-button type="success"><b>Create post</b></x-button>
     </a>
+    <a type="button" class="mx-5 btn btn-secondary" href="{{route('posts.restore')}}"><b>Restore posts</b></a>
 </div>
-<table class="table mt-5 w-50 mx-auto" style="text-align:center">
+<table class="table mt-5 mx-auto" style="text-align:center; width:60%">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -21,10 +22,11 @@
         <tr>
             <th scope="row">{{$post['id']}}</th>
             <td>{{$post['title']}}</td>
-            <td>{{$post['postedBy']}}</td>
-            <td>{{$post['createdAt']}}</td>
+            <td>{{$post->user->name}}</td>
+            <td>{{$post->created_at}}</td>
             <td class="d-flex justify-content-around">
                 <a type="button" class="btn btn-info text-white" href="{{route('posts.show', $post['id'])}}">View</a>
+                <a type="button" class="btn btn-warning" href="{{route('posts.ajax', $post['id'])}}">View Ajax</a>
                 <a type="button" class="btn btn-primary" href="{{route('posts.edit', $post['id'])}}">Edit</a>
                 <form action="{{route('posts.destroy', $post['id'])}}" method="post">
                     <input class="btn btn-danger" type="submit" value="Delete" onclick="return confirm('Are you sure?')" />
@@ -36,10 +38,7 @@
         @endforeach
     </tbody>
 </table>
-<div class="d-flex mt-5 mx-auto w-50">
-    <div style="background-color:aliceblue; color:blue" class="px-2">Prev</div>
-    <div style="background-color:aliceblue; color:blue" class="px-2">1</div>
-    <div style="background-color:aliceblue; color:blue" class="px-2">2</div>
-    <div style="background-color:aliceblue; color:blue" class="px-2">Next</div>
+<div class="w-50 mx-auto my-5 d-flex justify-content-center">
+    {{ $posts->links() }}
 </div>
 @endsection
