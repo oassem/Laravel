@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.app')
 @section('title') Show details @endsection
 @section('content')
 <div class="w-50 mt-5 mx-5">
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="mt-5">
+    <!--<div class="mt-5">
         <div>
             <h3>Comments</h3>
         </div>
@@ -47,6 +47,9 @@
             <input name="id" value="{{$post['id']}}" hidden>
         </div><br>
         <button type="submit" class="btn btn-primary mb-5">Add</button>
-    </form>
+    </form>-->
+
+    <!--This is the comments component-->
+    @livewire('counter', ['ID' => $post->id])
 </div>
 @endsection

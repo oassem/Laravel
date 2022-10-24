@@ -35,7 +35,7 @@ class CommentsController extends Controller
 
     public function destroy($id)
     {
-        $comment = comment::find($id);
+        $comment = Comment::find($id);
         $comment->delete();
         return redirect()->route('posts.index');
     }

@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.app')
 @section('title') Home @endsection
 @section('content')
 <div class="d-flex justify-content-center w-50 mx-auto mt-5" style='font-family:cursive'>
