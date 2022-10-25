@@ -7,7 +7,7 @@
     </a>
     <a type="button" class="mx-5 btn btn-secondary" href="{{route('posts.restore')}}"><b>Restore posts</b></a>
 </div>
-<table class="table mt-5 mx-auto" style="text-align:center; width:70%">
+<table class="table mt-5 mx-auto" style="text-align:center; width:65%">
     <thead>
         <tr>
             <th scope="col">#</th>
@@ -15,7 +15,7 @@
             <th scope="col">Title</th>
             <th scope="col">Slug</th>
             <th scope="col">Posted by</th>
-            <th scope="col">Created At</th>
+            <th scope="col">Created at</th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
@@ -30,10 +30,10 @@
             <td>{{$post->created_at}}</td>
             <td class="d-flex justify-content-around pb-4">
                 <a type="button" class="btn btn-info text-white" href="{{route('posts.show', $post['id'])}}">View</a>
-                <a type="button" class="btn btn-warning" href="{{route('posts.ajax', $post['id'])}}">View Ajax</a>
+                <a type="button" class="btn btn-warning" href="{{route('posts.ajax', $post['id'])}}">Ajax</a>
                 <a type="button" class="btn btn-primary" href="{{route('posts.edit', $post['id'])}}">Edit</a>
                 <form action="{{route('posts.destroy', $post['id'])}}" method="post">
-                    <input class="btn btn-danger" type="submit" value="Delete" onclick="return confirm('Are you sure?')" />
+                    <input class="btn btn-danger" type="submit" value="Trash" onclick="return confirm('Are you sure?')" />
                     @method('delete')
                     @csrf
                 </form>
