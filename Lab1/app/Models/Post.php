@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User;
 use App\Models\Comment;
 use Carbon\Carbon;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Post extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use Sluggable;
 
     public function user()
     {
@@ -32,5 +34,14 @@ class Post extends Model
     public function getUpdatedAtAttribute($date)
     {
         return Carbon::parse($date)->format('Y-m-d');
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 }

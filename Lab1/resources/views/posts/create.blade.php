@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title') Create @endsection
 @section('content')
-<form class="w-50 mt-5 mx-5" method="POST" action="{{route('posts.store')}}">
+<form class="w-50 mt-5 mx-5" method="POST" action="{{route('posts.store')}}" enctype="multipart/form-data">
     @csrf
     <div class="form-group mb-5">
         <input type="text" name="title" class="form-control" placeholder="Enter title">
@@ -15,6 +15,9 @@
             <option value="{{$user->id}}">{{$user->name}}</option>
             @endforeach
         </select>
+    </div>
+    <div class="form-group mb-5">
+        <input type="file" class="form-control" name="image" />
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

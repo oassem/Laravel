@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title') Edit @endsection
 @section('content')
-<form class="w-50 mt-5 mx-5" method="post" action="{{route('posts.update', $post['id'])}}">
+<form class="w-50 mt-5 mx-5" method="post" action="{{route('posts.update', $post['id'])}}" enctype="multipart/form-data">
     @method('PUT')
     @csrf
     <div class="form-group mb-5">
@@ -20,6 +20,10 @@
             @endif
             @endforeach
         </select>
+    </div>
+    <img width="50%" class="rounded" src="{{asset('storage/'.$post->image)}}">
+    <div class="form-group my-5">
+        <input type="file" class="form-control" name="image" />
     </div>
     <button type="submit" class="btn btn-primary">Edit</button>
 </form>

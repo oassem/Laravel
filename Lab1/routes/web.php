@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\CommentsController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +16,13 @@ use App\Http\Controllers\CommentsController;
 |
 */
 //posts
-Route::get('/posts', [PostsController::class, 'index'])->name('posts.index');
-Route::post('/posts', [PostsController::class, 'store'])->name('posts.store');
-Route::get('/posts/create', [PostsController::class, 'create'])->name('posts.create');
-Route::get('/posts/{post}', [PostsController::class, 'show'])->name('posts.show');
-Route::get('/posts/{post}/edit', [PostsController::class, 'edit'])->name('posts.edit');
-Route::put('/posts/{post}', [PostsController::class, 'update'])->name('posts.update');
-Route::delete('/posts/{post}', [PostsController::class, 'destroy'])->name('posts.destroy');
+Route::get('/posts', [PostsController::class, 'index'])->name('posts.index')->middleware('auth');
+Route::post('/posts', [PostsController::class, 'store'])->name('posts.store')->middleware('auth');
+Route::get('/posts/create', [PostsController::class, 'create'])->name('posts.create')->middleware('auth');
+Route::get('/posts/{post}', [PostsController::class, 'show'])->name('posts.show')->middleware('auth');
+Route::get('/posts/{post}/edit', [PostsController::class, 'edit'])->name('posts.edit')->middleware('auth');
+Route::put('/posts/{post}', [PostsController::class, 'update'])->name('posts.update')->middleware('auth');
+Route::delete('/posts/{post}', [PostsController::class, 'destroy'])->name('posts.destroy')->middleware('auth');
 
 //comments
 Route::post('/comments', [CommentsController::class, 'store'])->name('comments.store');
@@ -34,4 +35,11 @@ Route::delete('/comments/{comment}', [CommentsController::class, 'destroy'])->na
 Route::get('/restore', [PostsController::class, 'restore'])->name('posts.restore');
 
 //ajax
-Route::get('/ajax/{id}', [PostsController::class, 'ajax'])->name('posts.ajax');
+Route::get('/ajax/{id}', [PostsController::class, 'ajax'])->name('posts.ajax')->middleware('auth');
+
+//auth
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', function(){
+    return view('auth/login');
+});

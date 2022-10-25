@@ -12,7 +12,7 @@
             </div>
             <div class="modal-body">
                 <span><b>User name:</b> {{$post->user->name}}</span>
-                <span class="mx-5"><b>User email:</b> {{$post->user->email}}</span>
+                <span class="mx-4"><b>User email:</b> {{$post->user->email}}</span>
             </div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-primary" href="{{route('posts.index')}}">Close me please!</a>

@@ -7,11 +7,13 @@
     </a>
     <a type="button" class="mx-5 btn btn-secondary" href="{{route('posts.restore')}}"><b>Restore posts</b></a>
 </div>
-<table class="table mt-5 mx-auto" style="text-align:center; width:60%">
+<table class="table mt-5 mx-auto" style="text-align:center; width:70%">
     <thead>
         <tr>
             <th scope="col">#</th>
+            <th scope="col">Image</th>
             <th scope="col">Title</th>
+            <th scope="col">Slug</th>
             <th scope="col">Posted by</th>
             <th scope="col">Created At</th>
             <th scope="col">Actions</th>
@@ -21,10 +23,12 @@
         @foreach($posts as $post)
         <tr>
             <th scope="row">{{$post['id']}}</th>
+            <td style="width: 10%"><img width="100%" class="rounded" src="{{asset('storage/'.$post->image)}}"></td>
             <td>{{$post['title']}}</td>
+            <td>{{$post['slug']}}</td>
             <td>{{$post->user->name}}</td>
             <td>{{$post->created_at}}</td>
-            <td class="d-flex justify-content-around">
+            <td class="d-flex justify-content-around pb-4">
                 <a type="button" class="btn btn-info text-white" href="{{route('posts.show', $post['id'])}}">View</a>
                 <a type="button" class="btn btn-warning" href="{{route('posts.ajax', $post['id'])}}">View Ajax</a>
                 <a type="button" class="btn btn-primary" href="{{route('posts.edit', $post['id'])}}">Edit</a>
