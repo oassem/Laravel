@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\CommentsController;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +42,39 @@ Route::get('/ajax/{id}', [PostsController::class, 'ajax'])->name('posts.ajax')->
 //auth
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/', function(){
+Route::get('/', function () {
     return view('auth/login');
+});
+
+// socialite
+Route::get('/auth/github', function () {
+    return Socialite::driver('github')->redirect();
+});
+
+Route::get('/auth/github/callback', function () {
+    try {
+
+        $user = Socialite::driver('github')->user();
+
+        $finduser = User::where('github_id', $user->id)->first();
+
+        if ($finduser) {
+
+            Auth::login($finduser);
+
+            return redirect()->intended('posts');
+        } else {
+            $newUser = User::updateOrCreate(['email' => $user->email], [
+                'name' => $user->name,
+                'github_id' => $user->id,
+                'password' => encrypt('12345')
+            ]);
+
+            Auth::login($newUser);
+
+            return redirect()->intended('posts');
+        }
+    } catch (Exception $e) {
+        dd($e->getMessage());
+    }
 });
